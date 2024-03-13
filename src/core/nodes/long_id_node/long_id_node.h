@@ -1,24 +1,21 @@
-#ifndef GROUP_NODE
-#define GROUP_NODE
-
-#include "src/core/nodes/inode.h"
-#include "src/core/nodes/node_types.h"
+#ifndef INDEXED_STRING_NODE
+#define INDEXED_STRING_NODE
 
 namespace node {
 
-enum class GroupNodeFileds { kOpcode, kLength, kID };
+enum class LongIDNodeFields { kOpcode, kLength, kIndex, kString };
 
-const std::map<GroupNodeFileds, std::pair<int, int>> group_node_byte_map = {
-    {GroupNodeFileds::kOpcode, {0, 2}},
-    {GroupNodeFileds::kLength, {2, 2}},
-    {GroupNodeFileds::kID, {4, 8}}};
+const std::map<LongIDNodeFields, std::pair<int, int>> long_id_node_byte_map = {
+    {LongIDNodeFields::kOpcode, {0, 2}},
+    {LongIDNodeFields::kLength, {2, 2}},
+    {LongIDNodeFields::kString, {4, -1}}};
 
-class GroupNode : public IPrimaryNode {
+class LongIDNode : public IAncillaryNode {
   public:
-    GroupNode()
-        : byte_map(group_node_byte_map), node_type_(NodeTypes::kGroupNode){};
-    GroupNode(std::shared_ptr<std::byte[]> byte_presentation)
-        : byte_map(group_node_byte_map), node_type_(NodeTypes::kGroupNode) {
+    LongIDNode()
+        : byte_map(long_id_node_byte_map), node_type_(NodeTypes::kLongIDNode){};
+    LongIDNode(std::shared_ptr<std::byte[]> byte_presentation)
+        : byte_map(long_id_node_byte_map), node_type_(NodeTypes::kLongIDNode) {
         SetBytePresentation(byte_presentation);
     }
     void SetBytePresentation(
@@ -29,7 +26,7 @@ class GroupNode : public IPrimaryNode {
         }
     }
     template <typename ReturnType>
-    ReturnType GetFieldValueByName(GroupNodeFileds name) {
+    ReturnType GetFieldValueByName(LongIDNodeFields name) {
         assert(byte_map.find(name) != byte_map.end());
         int offset = byte_map.at(name).first;
         int length = byte_map.at(name).second;
@@ -41,17 +38,17 @@ class GroupNode : public IPrimaryNode {
     NodeTypes GetNodeType() override { return node_type_; }
     static std::shared_ptr<INode>
     CreateFromBytes(std::shared_ptr<std::byte[]> bytes) {
-        return std::make_shared<GroupNode>(bytes);
+        return std::make_shared<LongIDNode>(bytes);
     }
 
   private:
     std::shared_ptr<std::byte[]> byte_presentation_;
-    std::map<GroupNodeFileds, bool> cached_fields_;
-    std::map<GroupNodeFileds, std::pair<int, int>> byte_map;
+    std::map<LongIDNodeFields, bool> cached_fields_;
+    std::map<LongIDNodeFields, std::pair<int, int>> byte_map;
     NodeTypes node_type_;
 };
 
-template <> std::string GroupNode::GetFieldValueByName(GroupNodeFileds name) {
+template <> std::string LongIDNode::GetFieldValueByName(LongIDNodeFields name) {
     assert(byte_map.find(name) != byte_map.end());
     int offset = byte_map.at(name).first;
     const char *const str_bytes =

@@ -21,7 +21,7 @@ const std::map<HeaderNodeFields, std::pair<int, int>> head_node_byte_map = {
 
 
 
-class HeaderNode : public INode {
+class HeaderNode : public IPrimaryNode {
   public:
     HeaderNode()
         : byte_map(head_node_byte_map), node_type_(NodeTypes::kHeaderNode){};

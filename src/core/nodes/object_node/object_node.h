@@ -15,7 +15,7 @@ const std::map<ObjectNodeFileds, std::pair<int, int>> object_node_byte_map = {
 
 
 
-class ObjectNode : public INode {
+class ObjectNode : public IPrimaryNode {
   public:
     ObjectNode()
         : byte_map(object_node_byte_map), node_type_(NodeTypes::kObjectNode){};

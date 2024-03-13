@@ -6,7 +6,8 @@ enum class NodeTypes {
     kUndefinedNode,
     kObjectNode,
     kGroupNode,
-    kFaceNode
+    kFaceNode,
+    kLongIDNode
 };
 
 #endif
