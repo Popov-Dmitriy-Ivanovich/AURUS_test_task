@@ -6,12 +6,12 @@
 
 namespace node {
 
-enum class ObjectNodeFileds { kOpcode, kLength, kID};
+enum class ObjectNodeFields { kOpcode, kLength, kID};
 
-const std::map<ObjectNodeFileds, std::pair<int, int>> object_node_byte_map = {
-    {ObjectNodeFileds::kOpcode, {0, 2}},
-    {ObjectNodeFileds::kLength, {2, 2}},
-    {ObjectNodeFileds::kID, {4, 8}}};
+const std::map<ObjectNodeFields, std::pair<int, int>> object_node_byte_map = {
+    {ObjectNodeFields::kOpcode, {0, 2}},
+    {ObjectNodeFields::kLength, {2, 2}},
+    {ObjectNodeFields::kID, {4, 8}}};
 
 
 
@@ -31,7 +31,7 @@ class ObjectNode : public IPrimaryNode {
         }
     }
     template <typename ReturnType>
-    ReturnType GetFieldValueByName(ObjectNodeFileds name) {
+    ReturnType GetFieldValueByName(ObjectNodeFields name) {
         assert(byte_map.find(name) != byte_map.end());
         int offset = byte_map.at(name).first;
         int length = byte_map.at(name).second;
@@ -47,13 +47,13 @@ class ObjectNode : public IPrimaryNode {
     }
   private:
     std::shared_ptr<std::byte[]> byte_presentation_;
-    std::map<ObjectNodeFileds, bool> cached_fields_;
-    std::map<ObjectNodeFileds, std::pair<int, int>> byte_map;
+    std::map<ObjectNodeFields, bool> cached_fields_;
+    std::map<ObjectNodeFields, std::pair<int, int>> byte_map;
     NodeTypes node_type_;
 };
 
 template <>
-std::string ObjectNode::GetFieldValueByName(ObjectNodeFileds name){
+std::string ObjectNode::GetFieldValueByName(ObjectNodeFields name){
     assert(byte_map.find(name) != byte_map.end());
     int offset = byte_map.at(name).first;
     const char * const str_bytes = reinterpret_cast<const char * const>(byte_presentation_.get()+offset);

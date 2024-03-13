@@ -6,12 +6,12 @@
 
 namespace node {
 
-enum class GroupNodeFileds { kOpcode, kLength, kID };
+enum class GroupNodeFields { kOpcode, kLength, kID };
 
-const std::map<GroupNodeFileds, std::pair<int, int>> group_node_byte_map = {
-    {GroupNodeFileds::kOpcode, {0, 2}},
-    {GroupNodeFileds::kLength, {2, 2}},
-    {GroupNodeFileds::kID, {4, 8}}};
+const std::map<GroupNodeFields, std::pair<int, int>> group_node_byte_map = {
+    {GroupNodeFields::kOpcode, {0, 2}},
+    {GroupNodeFields::kLength, {2, 2}},
+    {GroupNodeFields::kID, {4, 8}}};
 
 class GroupNode : public IPrimaryNode {
   public:
@@ -29,7 +29,7 @@ class GroupNode : public IPrimaryNode {
         }
     }
     template <typename ReturnType>
-    ReturnType GetFieldValueByName(GroupNodeFileds name) {
+    ReturnType GetFieldValueByName(GroupNodeFields name) {
         assert(byte_map.find(name) != byte_map.end());
         int offset = byte_map.at(name).first;
         int length = byte_map.at(name).second;
@@ -46,12 +46,12 @@ class GroupNode : public IPrimaryNode {
 
   private:
     std::shared_ptr<std::byte[]> byte_presentation_;
-    std::map<GroupNodeFileds, bool> cached_fields_;
-    std::map<GroupNodeFileds, std::pair<int, int>> byte_map;
+    std::map<GroupNodeFields, bool> cached_fields_;
+    std::map<GroupNodeFields, std::pair<int, int>> byte_map;
     NodeTypes node_type_;
 };
 
-template <> std::string GroupNode::GetFieldValueByName(GroupNodeFileds name) {
+template <> std::string GroupNode::GetFieldValueByName(GroupNodeFields name) {
     assert(byte_map.find(name) != byte_map.end());
     int offset = byte_map.at(name).first;
     const char *const str_bytes =

@@ -4,14 +4,16 @@
 
 namespace errors {
 
-class ErrorOpeningFile : std::exception {
-    virtual const char *what() {
+class ErrorOpeningFile : public std::exception {
+    public:
+    virtual const char *what() const noexcept {
         return "Could not open file, please check if it exists";
     }
 };
 
-class ErrorReadingFile : std::exception {
-    virtual const char *what() {
+class ErrorReadingFile : public std::exception {
+    public:
+    virtual const char *what() const noexcept {
         return "Could not read from file, please check if file readable";
     }
 };
