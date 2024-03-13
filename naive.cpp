@@ -98,6 +98,7 @@ int main(int argc, char* argv[]) {
         FileReader file(file_path);
         file.Read();
         structures_bytes = file.GetByteNodes();
+        file.Close();
     }
     catch(errors::ErrorOpeningFile ex){
         std::cout<<ex.what()<<std::endl;

@@ -3,6 +3,7 @@
 
 #include <functional>
 
+#include "src/core/nodes/header_node/header_node.h"
 #include "src/core/nodes/face_node/face_node.h"
 #include "src/core/nodes/group_node/group_node.h"
 #include "src/core/nodes/inode.h"
